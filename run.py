@@ -1,5 +1,7 @@
 import tornado.web
 import tornado.ioloop
+import asyncio
+import sys
 
 class basicRequestHandler(tornado.web.RequestHandler):
     def get(self):
@@ -18,9 +20,12 @@ class queryStringRequestHandler(tornado.web.RequestHandler):
 
 class staticRequestHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("index.html")
+        self.render("GUI/index.html")
 
 if __name__ == "__main__":
+    if sys.platform == 'win32':
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
     app = tornado.web.Application([
         (r"/", basicRequestHandler),
         (r"/blog", staticRequestHandler),
